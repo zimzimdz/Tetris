@@ -1,72 +1,67 @@
 /* piece.cpp */
-#include "piece.h"
+#include "Piece.h"
  
-Piece::Piece()
+Piece::Piece(int kind, int orientation)
 {
-    // Rien à faire
+    kind = kind;
+    orientation = orientation;
 }
  
-Piece::Piece(int k, int o)
+Piece::Piece(const Piece& piece)
 {
-    kind = k;
-    orientation = o;
+	kind = piece.kind;
+	orientation = piece.orientation;
+	color = piece.color;
+	posX = piece.posX;
+	posY = piece.posY;
 }
  
-Piece::Piece(const Piece &p)
+void Piece::SetKind(int _kind)
 {
-    kind = p.kind;
-    orientation = p.orientation;
-    color = p.color;
-    posX = p.posX;
-    posY = p.posY;
+	kind = _kind;
 }
  
-void Piece::setKind(int k)
+void Piece::SetOrientation(int _orientation)
 {
-    kind = k;
+	orientation = _orientation;
 }
  
-void Piece::setOrientation(int o)
+int Piece::GetKind() const
 {
-    orientation = o;
+	return kind;
 }
  
-int Piece::getKind()
+int Piece::GetOrientation() const
 {
-    return kind;
+	return orientation;
 }
  
-int Piece::getOrientation()
+void Piece::SetColor(int _color)
 {
-    return orientation;
+	color = _color;
 }
  
-void Piece::setColor(int c)
-{
-    color = c;
-}
- 
-int Piece::getColor()
+int Piece::GetColor() const
 {
     return color;
 }
  
-void Piece::setPosX(int x)
+void Piece::SetPosX(int x)
 {
-    posX = x;
+	posX = x;
 }
  
-int Piece::getPosX()
+int Piece::GetPosX() const
 {
-    return posX;
+	return posX;
 }
  
-void Piece::setPosY(int y)
+void Piece::SetPosY(int y)
 {
-    posY = y;
+	posY = y;
 }
  
-int Piece::getPosY()
+int Piece::GetPosY() const
 {
-    return posY;
+	return posY;
 }

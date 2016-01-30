@@ -1,253 +1,267 @@
 #include "Board.h"
 
-void Board::flood(int i, int j, int px, int py, int k, int o, int value, bool visited[][MATRIX_SIZE])
+//-------------------------------------------------------------------------------
+Board::Board()
 {
-    if(px < 0 || px >= MATRIX_SIZE || py < 0 || py >= MATRIX_SIZE || visited[px][py] || PIECES[k][o][px][py] == FREE){
+	for (int i = 0; i < BOARD_WIDTH; ++i)
+	{
+		for (int j = 0; j < BOARD_HEIGHT; ++j)
+		{
+			area[i][j] = FREE;
+		}
+	}
+}
 
+//-------------------------------------------------------------------------------
+void Board::Flood(int i, int j, int px, int py, int kind, int orientation, int value, bool visited[][MATRIX_SIZE])
+{
+	if(px < 0 || px >= MATRIX_SIZE || py < 0 || py >= MATRIX_SIZE || visited[px][py] || PIECES[kind][orientation][px][py] == FREE)
+	{
 		return;
 	}
  
-    visited[px][py] = true;
-	if(i >=0)area[j][i] = value;
+  visited[px][py] = true;
+	if(i >= 0) area[j][i] = value;
     
- 
-    flood(i, j - 1, px, py - 1, k, o, value, visited);
-    flood(i + 1, j, px + 1, py, k, o, value, visited);
-    flood(i, j + 1, px, py + 1, k, o, value, visited);
-    flood(i - 1, j, px - 1, py, k, o, value, visited);
+	Flood(i, j - 1, px, py - 1, kind, orientation, value, visited);
+	Flood(i + 1, j, px + 1, py, kind, orientation, value, visited);
+	Flood(i, j + 1, px, py + 1, kind, orientation, value, visited);
+	Flood(i - 1, j, px - 1, py, kind, orientation, value, visited);
 }
  
-void Board::flood(int i, int j, int px, int py, int k, int o, bool &flag, bool visited[][MATRIX_SIZE])
+//-------------------------------------------------------------------------------
+void Board::Flood(int i, int j, int px, int py, int kind, int orientation, bool& flag, bool visited[][MATRIX_SIZE])
 {
-    if(px < 0 || px >= MATRIX_SIZE || py < 0 || py >= MATRIX_SIZE || visited[px][py] || PIECES[k][o][px][py] == FREE)
-        return;
- 
-    visited[px][py] = true;
- 
-    if(i < 0 || i >= BOARD_HEIGHT || j < 0 || j >= BOARD_WIDTH || area[j][i] != FREE )
-    {
-        flag = false;
-        return;
-    }
- 
-    flood(i, j - 1, px, py - 1, k, o, flag, visited);
-    flood(i + 1, j, px + 1, py, k, o, flag, visited);
-    flood(i, j + 1, px, py + 1, k, o, flag, visited);
-    flood(i - 1, j, px - 1, py, k, o, flag, visited);
+	if (px < 0 || px >= MATRIX_SIZE || py < 0 || py >= MATRIX_SIZE || visited[px][py] || PIECES[kind][orientation][px][py] == FREE)
+	{
+		return;
+	}
+
+  visited[px][py] = true;
+
+  if(i < 0 || i >= BOARD_HEIGHT || j < 0 || j >= BOARD_WIDTH || area[j][i] != FREE )
+  {
+      flag = false;
+      return;
+  }
+
+  Flood(i, j - 1, px, py - 1, kind, orientation, flag, visited);
+  Flood(i + 1, j, px + 1, py, kind, orientation, flag, visited);
+  Flood(i, j + 1, px, py + 1, kind, orientation, flag, visited);
+  Flood(i - 1, j, px - 1, py, kind, orientation, flag, visited);
 }
  
-void Board::floodFill(int i, int j, int px, int py, int k, int o, int value)
+//-------------------------------------------------------------------------------
+void Board::FloodFill(int i, int j, int px, int py, int kind, int orientation, int value)
 {
-    bool visited[MATRIX_SIZE][MATRIX_SIZE];
- 
-    for(int l = 0; l < MATRIX_SIZE; ++l)
-        for(int m = 0; m < MATRIX_SIZE; ++m)
-            visited[l][m] = false;
- 
-    flood(i, j, px, py, k, o, value, visited);
+	bool visited[MATRIX_SIZE][MATRIX_SIZE];
+
+	for (int l = 0; l < MATRIX_SIZE; ++l)
+	{
+		for (int m = 0; m < MATRIX_SIZE; ++m)
+		{
+			visited[l][m] = false;
+		}
+	}
+	Flood(i, j, px, py, kind, orientation, value, visited);
 }
  
-Board::Board()
+//-------------------------------------------------------------------------------
+void Board::DrawPiece(Piece& piece)
 {
-    for(int i = 0; i < BOARD_WIDTH; ++i)
-        for(int j = 0; j < BOARD_HEIGHT; ++j)
-            area[i][j] = FREE;
-}
+    const int posX = piece.GetPosX();
+    const int posY = piece.GetPosY();
+
+    const int kind = piece.GetKind();
+    const int orientation = piece.GetOrientation();
  
-void Board::drawPiece(Piece p)
-{
-    int i = p.getPosX();
-    int j = p.getPosY();
- 
-    int k = p.getKind();
-    int o = p.getOrientation();
- 
-    switch(k)
+    switch(kind)
     {
         case I:
-            p.setColor(CYAN);
+            piece.SetColor(CYAN);
             break;
         case J:
-            p.setColor(BLUE);
+            piece.SetColor(BLUE);
             break;
         case L:
-            p.setColor(ORANGE);
+            piece.SetColor(ORANGE);
             break;
         case O:
-            p.setColor(YELLOW);
+            piece.SetColor(YELLOW);
             break;
         case S:
-            p.setColor(GREEN);
+            piece.SetColor(GREEN);
             break;
         case T:
-            p.setColor(PURPLE);
+            piece.SetColor(PURPLE);
             break;
         case Z:
-            p.setColor(RED);
+            piece.SetColor(RED);
             break;
         default:
             break;
     }
  
-    floodFill(i, j, PIVOT_X, PIVOT_Y, k, o, p.getColor());
+    FloodFill(posX, posY, PIVOT_X, PIVOT_Y, kind, orientation, piece.GetColor());
 }
  
-void Board::clearPiece(Piece p)
+//-------------------------------------------------------------------------------
+void Board::ClearPiece(const Piece& piece)
 {
-    int i = p.getPosX();
-    int j = p.getPosY();
+    const int posX = piece.GetPosX();
+    const int posY = piece.GetPosY();
+		const int kind = piece.GetKind();
+		const int orientation = piece.GetOrientation();
  
-    int k = p.getKind();
-    int o = p.getOrientation();
- 
-    floodFill(i, j, PIVOT_X, PIVOT_Y, k, o, FREE);
+		FloodFill(posX, posY, PIVOT_X, PIVOT_Y, kind, orientation, FREE);
 }
  
-void Board::newPiece(Piece p)
+//-------------------------------------------------------------------------------
+void Board::NewPiece(const Piece& piece)
+{ 
+	m_currentPiece.SetColor(piece.GetColor());
+	m_currentPiece.SetKind(piece.GetKind());
+	m_currentPiece.SetOrientation(piece.GetOrientation());
+	m_currentPiece.SetPosX(ORIGIN_X);
+	m_currentPiece.SetPosY(ORIGIN_Y);
+	DrawPiece(m_currentPiece);
+}
+ 
+//-------------------------------------------------------------------------------
+bool Board::IsCurrentPieceMovable(int x, int y)
 {
-    p.setPosX(ORIGIN_X);
-    p.setPosY(ORIGIN_Y);
- 
-    drawPiece(p);
- 
-    setCurrentPiece(p);
+	ClearPiece(m_currentPiece);
+
+	bool movable = true;
+	bool visited[MATRIX_SIZE][MATRIX_SIZE];
+	for (int l = 0; l < MATRIX_SIZE; ++l)
+	{
+		for (int m = 0; m < MATRIX_SIZE; ++m)
+		{
+			visited[l][m] = false;
+		}
+	}
+		
+	const int kind = m_currentPiece.GetKind();
+	const int orientation = m_currentPiece.GetOrientation();
+
+	Flood(x, y, PIVOT_X, PIVOT_Y, kind, orientation, movable, visited);
+
+	DrawPiece(m_currentPiece);
+
+	return movable;
 }
  
-bool Board::isCurrentPieceMovable(int x, int y)
+//-------------------------------------------------------------------------------
+bool Board::IsCurrentPieceRotable(int orientation)
 {
-    clearPiece(currentPiece);
+	ClearPiece(m_currentPiece);
  
-    bool movable = true;
+  bool rotable = true;
+  bool visited[MATRIX_SIZE][MATRIX_SIZE];
  
-    bool visited[MATRIX_SIZE][MATRIX_SIZE];
+	for (int i = 0; i < MATRIX_SIZE; ++i)
+	{
+		for (int j = 0; j < MATRIX_SIZE; ++j)
+		{
+			visited[i][j] = false;
+		}
+	}
  
-    for(int l = 0; l < MATRIX_SIZE; ++l)
-        for(int m = 0; m < MATRIX_SIZE; ++m)
-            visited[l][m] = false;
+	const int kind = m_currentPiece.GetKind();
  
-    int k = currentPiece.getKind();
-    int o = currentPiece.getOrientation();
- 
-    flood(x, y, PIVOT_X, PIVOT_Y, k, o, movable, visited);
- 
-    drawPiece(currentPiece);
- 
-    return movable;
+	Flood(m_currentPiece.GetPosX(), m_currentPiece.GetPosY(), PIVOT_X, PIVOT_Y, kind, orientation, rotable, visited); 
+	DrawPiece(m_currentPiece);
+  return rotable;
 }
  
-bool Board::isCurrentPieceRotable(int o)
+//-------------------------------------------------------------------------------
+void Board::MoveCurrentPieceDown()
 {
-    clearPiece(currentPiece);
+	const int posX = m_currentPiece.GetPosX();
+	const int posY = m_currentPiece.GetPosY();
  
-    bool rotable = true;
- 
-    bool visited[MATRIX_SIZE][MATRIX_SIZE];
- 
-    for(int i = 0; i < MATRIX_SIZE; ++i)
-        for(int j = 0; j < MATRIX_SIZE; ++j)
-            visited[i][j] = false;
- 
-    int k = currentPiece.getKind();
- 
-    flood(currentPiece.getPosX(), currentPiece.getPosY(), PIVOT_X, PIVOT_Y, k, o, rotable, visited);
- 
-    drawPiece(currentPiece);
- 
-    return rotable;
+	if (IsCurrentPieceMovable(posX + 1, posY))
+  {
+		ClearPiece(m_currentPiece);
+		m_currentPiece.SetPosX(posX + 1);
+		DrawPiece(m_currentPiece);
+  }
 }
  
-void Board::moveCurrentPieceDown()
+//-------------------------------------------------------------------------------
+void Board::MoveCurrentPieceLeft()
 {
-    int x = currentPiece.getPosX();
-    int y = currentPiece.getPosY();
+	const int posX = m_currentPiece.GetPosX();
+	const int posY = m_currentPiece.GetPosY();
  
-    if(isCurrentPieceMovable(x + 1, y))
-    {
-        clearPiece(currentPiece);
-        currentPiece.setPosX(x + 1);
- 
-        drawPiece(currentPiece);
-    }
+	if (IsCurrentPieceMovable(posX, posY - 1))
+	{
+		ClearPiece(m_currentPiece);
+		m_currentPiece.SetPosY(posY - 1);
+		DrawPiece(m_currentPiece);
+	}
 }
  
-void Board::moveCurrentPieceLeft()
+//-------------------------------------------------------------------------------
+void Board::MoveCurrentPieceRight()
 {
-    int x = currentPiece.getPosX();
-    int y = currentPiece.getPosY();
+	const int posX = m_currentPiece.GetPosX();
+	const int posY = m_currentPiece.GetPosY();
  
-    if(isCurrentPieceMovable(x, y - 1))
-    {
-        clearPiece(currentPiece);
-        currentPiece.setPosY(y - 1);
- 
-        drawPiece(currentPiece);
-    }
+	if (IsCurrentPieceMovable(posX, posY + 1))
+	{
+		ClearPiece(m_currentPiece);
+		m_currentPiece.SetPosY(posY + 1);
+		DrawPiece(m_currentPiece);
+	}
 }
  
-void Board::moveCurrentPieceRight()
+//-------------------------------------------------------------------------------
+void Board::RotateCurrentPieceLeft()
 {
-    int x = currentPiece.getPosX();
-    int y = currentPiece.getPosY();
- 
-    if(isCurrentPieceMovable(x, y + 1))
-    {
-        clearPiece(currentPiece);
-        currentPiece.setPosY(y + 1);
- 
-        drawPiece(currentPiece);
-    }
+	int orientation = m_currentPiece.GetOrientation();
+	orientation = orientation > 0 ? orientation-- : NB_ROTATIONS - 1;
+	
+	if (IsCurrentPieceRotable(orientation))
+	{
+		ClearPiece(m_currentPiece);
+		m_currentPiece.SetOrientation(orientation);
+		DrawPiece(m_currentPiece);
+	}
 }
  
-void Board::rotateCurrentPieceLeft()
+//-------------------------------------------------------------------------------
+void Board::RotateCurrentPieceRight()
 {
-    int o = currentPiece.getOrientation();
- 
-    if(o > 0)
-        o--;
-    else
-        o = NB_ROTATIONS - 1;
- 
-    if(isCurrentPieceRotable(o))
-    {
-        clearPiece(currentPiece);
- 
-        currentPiece.setOrientation(o);
-        drawPiece(currentPiece);
-    }
+  int orientation = m_currentPiece.GetOrientation();
+	orientation = orientation < NB_ROTATIONS - 1 ? orientation++ : 0;
+	
+  if(IsCurrentPieceRotable(orientation))
+  {
+		ClearPiece(m_currentPiece);
+		m_currentPiece.SetOrientation(orientation);
+		DrawPiece(m_currentPiece);
+  }
 }
  
-void Board::rotateCurrentPieceRight()
+//-------------------------------------------------------------------------------
+void Board::DeleteLine(int line)
 {
-    int o = currentPiece.getOrientation();
- 
-    if(o < NB_ROTATIONS - 1)
-        o++;
-    else
-        o = 0;
- 
-    if(isCurrentPieceRotable(o))
-    {
-        clearPiece(currentPiece);
-        currentPiece.setOrientation(o);
- 
-        drawPiece(currentPiece);
-    }
+	ClearPiece(m_currentPiece);
+
+	for (int j = line; j > 0; --j)
+	{
+		for (int i = 0; i < BOARD_WIDTH; ++i)
+		{
+			area[i][j] = area[i][j - 1];
+		}
+	}
+	DrawPiece(m_currentPiece);
 }
  
-void Board::deleteLine(int y)
-{
-    clearPiece(currentPiece);
- 
-    for(int j = y; j > 0; --j)
-    {
-        for(int i = 0; i < BOARD_WIDTH; ++i)
-            area[i][j] = area[i][j-1];
-    }
- 
-    drawPiece(currentPiece);
-}
- 
-int Board::deletePossibleLines()
+//-------------------------------------------------------------------------------
+int Board::DeletePossibleLines()
 {
     int nbLinesDeleted = 0;
  
@@ -258,57 +272,66 @@ int Board::deletePossibleLines()
         if(i == BOARD_WIDTH)
         {
             nbLinesDeleted++;
-            deleteLine(j);
+            DeleteLine(j);
         }
     }
  
     return nbLinesDeleted;
 }
  
-void Board::dropCurrentPiece()
+//-------------------------------------------------------------------------------
+void Board::DropCurrentPiece()
 {
-    int x = currentPiece.getPosX();
-    int y = currentPiece.getPosY();
- 
-    while(isCurrentPieceMovable(x++, y))
-        moveCurrentPieceDown();
+	int x = m_currentPiece.GetPosX();
+	const int y = m_currentPiece.GetPosY();
+
+	while (IsCurrentPieceMovable(x++, y))
+	{
+		MoveCurrentPieceDown();
+	}
 }
  
-bool Board::isCurrentPieceFallen()
+//-------------------------------------------------------------------------------
+bool Board::IsCurrentPieceFallen()
 {
-    int x = currentPiece.getPosX();
-    int y = currentPiece.getPosY();
- 
-    if(isCurrentPieceMovable(x + 1, y))
-        return false;
- 
-    return true;
+	const int posX = m_currentPiece.GetPosX();
+	const int posY = m_currentPiece.GetPosY();
+	return !IsCurrentPieceMovable(posX + 1, posX);
 }
  
-bool Board::isGameOver()
+//-------------------------------------------------------------------------------
+bool Board::IsGameOver() const
 {
-    for(int i = 0; i < BOARD_WIDTH; ++i)
-    {
-        if(area[i][0] != FREE)
-            return true;
-    }
-    return false;
+  for(int i = 0; i < BOARD_WIDTH; ++i)
+  {
+		if (area[i][0] != FREE)
+		{
+			return true;
+		}
+  }
+  return false;
 }
  
-void Board::clear()
+//-------------------------------------------------------------------------------
+void Board::Clear()
 {
-    for(int i = 0; i < BOARD_WIDTH; ++i)
-    {
-        for(int j = 0; j < BOARD_HEIGHT; ++j)
-            area[i][j] = FREE;
-    }
+  for(int i = 0; i < BOARD_WIDTH; ++i)
+  {
+		for (int j = 0; j < BOARD_HEIGHT; ++j)
+		{
+			area[i][j] = FREE;
+		}
+  }
 }
 
-void Board::setCurrentPiece(Piece p){
-	currentPiece = p;
+//-------------------------------------------------------------------------------
+void Board::SetCurrentPiece(const Piece& piece)
+{
+	m_currentPiece = piece;
 }
 
-Piece Board::getCurrentPiece(){
-
-	return currentPiece;
+//-------------------------------------------------------------------------------
+const Piece& Board::GetCurrentPiece() const
+{
+	return m_currentPiece;
 }

@@ -2,7 +2,7 @@
 #ifndef BOARD_H
 #define BOARD_H
  
-#include "piece.h"
+#include "Piece.h"
  
 enum  { FREE, FILLED };
  
@@ -14,45 +14,45 @@ const int ORIGIN_Y = 5;
  
 class Board
 {
-private:
-    Piece currentPiece;
-    Piece ghostPiece;
- 
-    void flood(int i, int j, int px, int py, int k, int o, int value, bool visited[][MATRIX_SIZE]);
-    void flood(int i, int j, int px, int py, int k, int o, bool &flag, bool visited[][MATRIX_SIZE]);
-    void floodFill(int i, int j, int px, int py, int k, int o, int value);
- 
 public:
-    int area[BOARD_WIDTH][BOARD_HEIGHT];
- 
-    Board();
- 
-    void setCurrentPiece(Piece p);
-    Piece getCurrentPiece();
- 
-    void drawPiece(Piece p);
-    void clearPiece(Piece p);
- 
-    void newPiece(Piece p);
- 
-    bool isCurrentPieceMovable(int x, int y);
-    bool isCurrentPieceRotable(int o);
- 
-    void moveCurrentPieceDown();
-    void moveCurrentPieceLeft();
-    void moveCurrentPieceRight();
- 
-    void rotateCurrentPieceLeft();
-    void rotateCurrentPieceRight();
- 
-    void deleteLine(int y);
-    int deletePossibleLines();
- 
-    void dropCurrentPiece();
-    bool isCurrentPieceFallen();
- 
-    void clear();
-	bool isGameOver();
+	int area[BOARD_WIDTH][BOARD_HEIGHT];
+
+	Board();
+
+	void SetCurrentPiece(const Piece& piece);
+	const Piece& GetCurrentPiece() const;
+
+	void DrawPiece(Piece& piece);
+	void ClearPiece(const Piece& piece);
+
+	void NewPiece(const Piece& p);
+
+	bool IsCurrentPieceMovable(int x, int y);
+	bool IsCurrentPieceRotable(int orientation);
+
+	void MoveCurrentPieceDown();
+	void MoveCurrentPieceLeft();
+	void MoveCurrentPieceRight();
+
+	void RotateCurrentPieceLeft();
+	void RotateCurrentPieceRight();
+
+	void DeleteLine(int line);
+	int DeletePossibleLines();
+
+	void DropCurrentPiece();
+	bool IsCurrentPieceFallen();
+
+	void Clear();
+	bool IsGameOver() const;
+
+private:
+	Piece m_currentPiece;
+	Piece m_ghostPiece;
+
+	void Flood(int i, int j, int px, int py, int k, int o, int value, bool visited[][MATRIX_SIZE]);
+	void Flood(int i, int j, int px, int py, int k, int o, bool &flag, bool visited[][MATRIX_SIZE]);
+	void FloodFill(int i, int j, int px, int py, int k, int o, int value);
 };
  
 #endif

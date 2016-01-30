@@ -29,7 +29,7 @@ public:
 	LRESULT CALLBACK MessageHandler(HWND, UINT, WPARAM, LPARAM);
 	
 private:
-	LPCWSTR appName;
+	LPCSTR appName;
 	HINSTANCE instance;
 	HWND mainWindow;
 

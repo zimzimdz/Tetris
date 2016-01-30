@@ -1,17 +1,6 @@
 #include "SFML.h"
 #include <iostream>
 
-SFML::SFML(void)
-{
-	
-}
-
-
-SFML::~SFML(void)
-{
-
-}
-
 bool SFML::Init(HWND boardWindow, HWND menuWindow, HWND nextWindow)
 {
 	boardView.create(boardWindow);
@@ -79,20 +68,20 @@ bool SFML::Render(GameEngine* engine)
 	for(unsigned int i=0; i<MATRIX_SIZE; i++){
 		for(unsigned int j=0; j<MATRIX_SIZE; j++){
 			sf::Sprite sprite;
-			if(PIECES[engine->GetNextPiece().getKind()][engine->GetNextPiece().getOrientation()][i][j] != FREE
-				&& engine->GetNextPiece().getColor() == CYAN)sprite.setTexture(cyanTexture);
-			else if(PIECES[engine->GetNextPiece().getKind()][engine->GetNextPiece().getOrientation()][i][j] != FREE
-				&& engine->GetNextPiece().getColor() == BLUE)sprite.setTexture(blueTexture);
-			else if(PIECES[engine->GetNextPiece().getKind()][engine->GetNextPiece().getOrientation()][i][j] != FREE
-				&& engine->GetNextPiece().getColor() == ORANGE)sprite.setTexture(orangeTexture);
-			else if(PIECES[engine->GetNextPiece().getKind()][engine->GetNextPiece().getOrientation()][i][j] != FREE
-				&& engine->GetNextPiece().getColor() == YELLOW)sprite.setTexture(yellowTexture);
-			else if(PIECES[engine->GetNextPiece().getKind()][engine->GetNextPiece().getOrientation()][i][j] != FREE
-				&& engine->GetNextPiece().getColor() == PURPLE)sprite.setTexture(violetTexture);
-			else if(PIECES[engine->GetNextPiece().getKind()][engine->GetNextPiece().getOrientation()][i][j] != FREE
-				&& engine->GetNextPiece().getColor() == GREEN)sprite.setTexture(greenTexture);
-			else if(PIECES[engine->GetNextPiece().getKind()][engine->GetNextPiece().getOrientation()][i][j] != FREE
-				&& engine->GetNextPiece().getColor() == RED)sprite.setTexture(redTexture);
+			if(PIECES[engine->GetNextPiece().GetKind()][engine->GetNextPiece().GetOrientation()][i][j] != FREE
+				&& engine->GetNextPiece().GetColor() == CYAN)sprite.setTexture(cyanTexture);
+			else if(PIECES[engine->GetNextPiece().GetKind()][engine->GetNextPiece().GetOrientation()][i][j] != FREE
+				&& engine->GetNextPiece().GetColor() == BLUE)sprite.setTexture(blueTexture);
+			else if(PIECES[engine->GetNextPiece().GetKind()][engine->GetNextPiece().GetOrientation()][i][j] != FREE
+				&& engine->GetNextPiece().GetColor() == ORANGE)sprite.setTexture(orangeTexture);
+			else if(PIECES[engine->GetNextPiece().GetKind()][engine->GetNextPiece().GetOrientation()][i][j] != FREE
+				&& engine->GetNextPiece().GetColor() == YELLOW)sprite.setTexture(yellowTexture);
+			else if(PIECES[engine->GetNextPiece().GetKind()][engine->GetNextPiece().GetOrientation()][i][j] != FREE
+				&& engine->GetNextPiece().GetColor() == PURPLE)sprite.setTexture(violetTexture);
+			else if(PIECES[engine->GetNextPiece().GetKind()][engine->GetNextPiece().GetOrientation()][i][j] != FREE
+				&& engine->GetNextPiece().GetColor() == GREEN)sprite.setTexture(greenTexture);
+			else if(PIECES[engine->GetNextPiece().GetKind()][engine->GetNextPiece().GetOrientation()][i][j] != FREE
+				&& engine->GetNextPiece().GetColor() == RED)sprite.setTexture(redTexture);
 			else sprite.setTexture(emptyTexture);
 			sprite.setPosition(j*SPRITE_WIDTH,(i*SPRITE_HEIGHT));
 			nextView.draw(sprite);

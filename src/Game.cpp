@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <cstdio>
+#include <winuser.h>
 
 Game::Game(void)
 {
@@ -55,7 +56,7 @@ bool Game::InitWindow(int& height, int& width){
 
 	instance = GetModuleHandle(NULL);
 	game = this;
-	appName = L"Tetris by Zimzim";
+	appName = "Tetris by Zimzim";
 
 	// Setup the windows class with default settings.
 	wc.style         = 0;
@@ -210,8 +211,8 @@ int Game::GameOver()
 {
     int msgboxID = MessageBox(
         NULL,
-        (LPCWSTR)L"You loose.\nDo you want to try again?",
-        (LPCWSTR)L"GameOver",
+        (LPCSTR)"You loose.\nDo you want to try again?",
+        (LPCSTR)"GameOver",
         MB_ICONWARNING | MB_OKCANCEL
     );
 

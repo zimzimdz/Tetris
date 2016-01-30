@@ -2,44 +2,44 @@
 #ifndef PIECE_H
 #define PIECE_H
  
-#include "shape.h"
+#include "Shape.h"
  
-enum { CYAN = 1, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, GHOST }; // Les couleurs de chaque pièce, GHOST est pour la pièce fantôme
+enum { CYAN = 1, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, GHOST }; // Piece colors
 enum { I, J, L, O, S, T, Z};
  
-/* Les coordonnées du point de pivot de la pièce */
+/* Piece pivot coordinates */
 const int PIVOT_X = 1;
 const int PIVOT_Y = 2;
  
 class Piece
 {
 public:
-    Piece();
-    Piece(int k, int o);
-    Piece(const Piece &p);
+	Piece() = default;
+  Piece(int kind, int orientation);
+  Piece(const Piece& p);
  
-    void setKind(int k);
-    void setOrientation(int o);
+  void SetKind(int kind);
+  void SetOrientation(int orientation);
  
-    int getKind();
-    int getOrientation();
+  int GetKind() const;
+  int GetOrientation() const;
  
-    void setColor(int c);
-    int getColor();
+  void SetColor(int color);
+  int GetColor() const;
  
-    void setPosX(int x);
-    int getPosX();
+  void SetPosX(int x);
+  int GetPosX() const;
  
-    void setPosY(int y);
-    int getPosY();
+  void SetPosY(int y);
+  int GetPosY() const;
+
 private:
-    int kind; // Piece kind
-    int orientation; // Orientation
-    int color; // Color
+  int kind; // Piece kind
+  int orientation; // Orientation
+  int color; // Color
  
-    int posX; // X line
-    int posY; // Y column
- 
+  int posX; // X line
+  int posY; // Y column
 };
  
 #endif

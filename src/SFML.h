@@ -21,8 +21,6 @@ const std::string IMG_MENU = "Image/menu.png";
 class SFML
 {
 public:
-	SFML(void);
-	~SFML(void);
 	bool Init(HWND boardWindow,HWND menuWindow, HWND nextWindow);
 	void Clear();
 	bool Render(GameEngine* engine);
