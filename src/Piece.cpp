@@ -1,67 +1,52 @@
 /* piece.cpp */
 #include "Piece.h"
- 
-Piece::Piece(int kind, int orientation)
+
+void Piece::SetKind(int kind)
 {
-    kind = kind;
-    orientation = orientation;
+	m_kind = kind;
 }
  
-Piece::Piece(const Piece& piece)
+void Piece::SetOrientation(int orientation)
 {
-	kind = piece.kind;
-	orientation = piece.orientation;
-	color = piece.color;
-	posX = piece.posX;
-	posY = piece.posY;
-}
- 
-void Piece::SetKind(int _kind)
-{
-	kind = _kind;
-}
- 
-void Piece::SetOrientation(int _orientation)
-{
-	orientation = _orientation;
+	m_orientation = orientation;
 }
  
 int Piece::GetKind() const
 {
-	return kind;
+	return m_kind;
 }
  
 int Piece::GetOrientation() const
 {
-	return orientation;
+	return m_orientation;
 }
  
-void Piece::SetColor(int _color)
+void Piece::SetColor(int color)
 {
-	color = _color;
+	m_color = color;
 }
  
 int Piece::GetColor() const
 {
-    return color;
+    return m_color;
 }
  
-void Piece::SetPosX(int x)
+void Piece::SetPosX(int posX)
 {
-	posX = x;
+	m_posX = posX;
 }
  
 int Piece::GetPosX() const
 {
-	return posX;
+	return m_posX;
 }
  
-void Piece::SetPosY(int y)
+void Piece::SetPosY(int posY)
 {
-	posY = y;
+	m_posY = posY;
 }
  
 int Piece::GetPosY() const
 {
-	return posY;
+	return m_posY;
 }

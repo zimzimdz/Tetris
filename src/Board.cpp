@@ -13,7 +13,7 @@ Board::Board()
 }
 
 //-------------------------------------------------------------------------------
-void Board::Flood(int i, int j, int px, int py, int kind, int orientation, int value, bool visited[][MATRIX_SIZE])
+void Board::Flood(int posX, int j, int px, int py, int kind, int orientation, int value, bool visited[MATRIX_SIZE][MATRIX_SIZE])
 {
 	if(px < 0 || px >= MATRIX_SIZE || py < 0 || py >= MATRIX_SIZE || visited[px][py] || PIECES[kind][orientation][px][py] == FREE)
 	{
@@ -21,16 +21,16 @@ void Board::Flood(int i, int j, int px, int py, int kind, int orientation, int v
 	}
  
   visited[px][py] = true;
-	if(i >= 0) area[j][i] = value;
+	if(posX >= 0) area[j][posX] = value;
     
-	Flood(i, j - 1, px, py - 1, kind, orientation, value, visited);
-	Flood(i + 1, j, px + 1, py, kind, orientation, value, visited);
-	Flood(i, j + 1, px, py + 1, kind, orientation, value, visited);
-	Flood(i - 1, j, px - 1, py, kind, orientation, value, visited);
+	Flood(posX, j - 1, px, py - 1, kind, orientation, value, visited);
+	Flood(posX + 1, j, px + 1, py, kind, orientation, value, visited);
+	Flood(posX, j + 1, px, py + 1, kind, orientation, value, visited);
+	Flood(posX - 1, j, px - 1, py, kind, orientation, value, visited);
 }
  
 //-------------------------------------------------------------------------------
-void Board::Flood(int i, int j, int px, int py, int kind, int orientation, bool& flag, bool visited[][MATRIX_SIZE])
+void Board::Flood(int posX, int j, int px, int py, int kind, int orientation, bool& flag, bool visited[MATRIX_SIZE][MATRIX_SIZE])
 {
 	if (px < 0 || px >= MATRIX_SIZE || py < 0 || py >= MATRIX_SIZE || visited[px][py] || PIECES[kind][orientation][px][py] == FREE)
 	{
@@ -39,7 +39,7 @@ void Board::Flood(int i, int j, int px, int py, int kind, int orientation, bool&
 
   visited[px][py] = true;
 
-  if(i < 0 || i >= BOARD_HEIGHT || j < 0 || j >= BOARD_WIDTH || area[j][i] != FREE )
+  if(posX < 0 || posX >= BOARD_HEIGHT || j < 0 || j >= BOARD_WIDTH || area[j][i] != FREE )
   {
       flag = false;
       return;

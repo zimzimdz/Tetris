@@ -3,6 +3,7 @@
 #define PIECE_H
  
 #include "Shape.h"
+#include <xutility>
  
 enum { CYAN = 1, BLUE, ORANGE, YELLOW, GREEN, PURPLE, RED, GHOST }; // Piece colors
 enum { I, J, L, O, S, T, Z};
@@ -15,8 +16,10 @@ class Piece
 {
 public:
 	Piece() = default;
-  Piece(int kind, int orientation);
-  Piece(const Piece& p);
+	Piece(int kind, int orientation)
+		: m_kind(std::move(kind))
+		, m_orientation(std::move(orientation))
+	{}
  
   void SetKind(int kind);
   void SetOrientation(int orientation);
@@ -34,12 +37,12 @@ public:
   int GetPosY() const;
 
 private:
-  int kind; // Piece kind
-  int orientation; // Orientation
-  int color; // Color
+	int m_kind{ 0 }; // Piece kind
+	int m_orientation{ 0 }; // Orientation
+	int m_color{ CYAN }; // Color
  
-  int posX; // X line
-  int posY; // Y column
+	int m_posX{ PIVOT_X }; // X line
+	int m_posY{ PIVOT_Y }; // Y column
 };
  
 #endif

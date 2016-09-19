@@ -50,9 +50,9 @@ private:
 	Piece m_currentPiece;
 	Piece m_ghostPiece;
 
-	void Flood(int i, int j, int px, int py, int k, int o, int value, bool visited[][MATRIX_SIZE]);
-	void Flood(int i, int j, int px, int py, int k, int o, bool &flag, bool visited[][MATRIX_SIZE]);
-	void FloodFill(int i, int j, int px, int py, int k, int o, int value);
+	void Flood(int posX, int posY, int pivotX, int pivotY, int kind, int orientation, int value, bool visited[][MATRIX_SIZE]);
+	void Flood(int posX, int posY, int pivotX, int pivotY, int kind, int orientation, bool &flag, bool visited[][MATRIX_SIZE]);
+	void FloodFill(int posX, int posY, int pivotX, int pivotY, int kind, int orientation, int value);
 };
  
 #endif

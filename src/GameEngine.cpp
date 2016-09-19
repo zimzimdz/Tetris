@@ -1,4 +1,5 @@
 #include "GameEngine.h"
+#include <stdlib.h>     /* srand, rand */
 
 void GameEngine::Init()
 {
@@ -20,19 +21,16 @@ Board* GameEngine::GetBoard() const
 
 void GameEngine::NewPiece()
 {	
-	m_pBoard->NewPiece(m_nextPiece);
 	m_nextPiece = Next();
+	m_pBoard->NewPiece(m_nextPiece);
 }
 
 Piece GameEngine::Next()
 {
-	std::random_device rd; // obtain a random number from hardware
-    std::mt19937 eng(rd()); // seed the generator
-    std::uniform_int_distribution<> distrKind(0, 6); // define the range
-	std::uniform_int_distribution<> distrOrientation(0, 3);
-	Piece piece = Piece(distrKind(eng), distrOrientation(eng));
+	const int kind = rand() % 7;
+	const int orientation = rand() % 4;
+	Piece piece = Piece(kind, orientation);
 
-	int kind = piece.GetKind();
 	switch (kind)
 	{
 		case I:

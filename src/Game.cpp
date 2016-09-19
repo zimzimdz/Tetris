@@ -151,39 +151,50 @@ void Game::Run(){
 		}
 		else
 		{
-			if(!gameOver) {
+			if(!gameOver) 
+			{
 				int j =  timer->GetEllapsed();
-				if(input->IsKeyDown(VK_DOWN) && j == 0) {
+				if(input->IsKeyDown(VK_DOWN) && j == 0)
+				{
 					timer->Start();
 					if(!gameEngine->StepForward()) gameOver = true;
 				}
-				if(input->IsKeyDown(VK_LEFT) && j == 0) {
+				if(input->IsKeyDown(VK_LEFT) && j == 0)
+				{
 					timer->Start();
 					gameEngine->MoveLeft();
 				}
-				if(input->IsKeyDown(VK_RIGHT) && j == 0) {
+				if(input->IsKeyDown(VK_RIGHT) && j == 0)
+				{
 					timer->Start();
 					gameEngine->MoveRight();
 				}
-				if(input->IsKeyDown(Q) && j == 0) {
+				if(input->IsKeyDown(Q) && j == 0)
+				{
 					timer->Start();
 					soundEngine->PlayFlip();
 					gameEngine->RotateLeft();
 				}
-				if(input->IsKeyDown(D) && j == 0) {
+				if(input->IsKeyDown(D) && j == 0)
+				{
 					timer->Start();
 					soundEngine->PlayFlip();
 					gameEngine->RotateRight();
 				}
-				if(input->IsKeyDown(SPACE) && j == 0) {
+				if(input->IsKeyDown(SPACE) && j == 0)
+				{
 					timer->Start();
 					gameEngine->Drop();
 				}
-				float currentTime = fps->ffps();
+				const int currentTime = fps->ffps();
 				if(currentTime > STEP_TIME){
 					fps->Init();
-					if(!gameEngine->StepForward()) gameOver = true;
-					else {
+					if (!gameEngine->StepForward())
+					{
+						gameOver = true;
+					}
+					else 
+					{
 						if(gameEngine->CheckLines() > 0) soundEngine->PlayKick();
 					}
 				}

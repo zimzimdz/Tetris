@@ -25,7 +25,7 @@ public:
 	inline const Piece& GetNextPiece() const {return m_nextPiece;}
 
 private:
-	Board* m_pBoard{nullptr};
+	Board* m_pBoard{ nullptr };
 	int m_score{0};
 	Piece m_nextPiece;
 
